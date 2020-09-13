@@ -1,6 +1,2 @@
-import { graphqlHTTP } from 'express-graphql'
-import Simple from './simple'
-
-export default graphqlHTTP({
-
-})
+export { map } from './DefaultRoutes'
+export {} from './GraphQLRoutes'
