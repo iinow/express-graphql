@@ -5,6 +5,8 @@ import {
 import { Book } from '~/model'
 import { Books } from '~/mock'
 import { BookInput } from '~/schemas/input'
+import { of } from 'rxjs'
+import { delay, map, tap } from 'rxjs/operators'
 
 @ObjectType()
 export class User {
@@ -29,6 +31,7 @@ export class User {
 
 @Resolver()
 export class BookResolver {
+
   @Query(() => [Book])
   books(): Book[] {
     return Books.books
@@ -37,18 +40,31 @@ export class BookResolver {
   @Query(() => Book)
   findBookById(
     @Arg('id', type => Int, { description: '책 아이디 값' }) id: number
-  ): Book | undefined {
-    return Books.books.find(book => book.id === id)
+  ): Promise<Book | undefined> {
+    return of(id)
+      .pipe(
+        map(bookId => Books.books.find(book => book.id === bookId)),
+        delay(1000)
+      )
+      .toPromise()
   }
 
   @Mutation(() => Book)
-  async addBook(@Arg('book') bookInput: BookInput): Promise<Book> {
-    const book: Book = {
-      id: Books.books.length,
-      name: bookInput.name,
-      authorId: bookInput.authorId
-    }
-    Books.books.push(book)
-    return Promise.resolve(book)
+  async addBook(@Arg('book') inputBook: BookInput): Promise<Book> {
+    return of(inputBook)
+      .pipe(
+        map(newBook => {
+          const book: Book = {
+            id: Books.books.length,
+            name: newBook.name,
+            authorId: newBook.authorId
+          }
+          return book
+        }),
+        tap(
+          newBook => Books.books.push(newBook)
+        )
+      )
+      .toPromise()
   }
 }
