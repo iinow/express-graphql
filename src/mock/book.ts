@@ -1,13 +1,7 @@
 import chance from 'chance'
+import { Book } from '~/model'
 
 const mock = chance()
-
-export interface Book {
-  id: number
-  authorId: number
-  name: string
-  // createAt: Date
-}
 
 export interface Author {
   id: number,

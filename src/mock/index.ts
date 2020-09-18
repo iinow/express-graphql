@@ -1,1 +1,1 @@
-export { default as Books, Author, Book } from './book'
+export { default as Books, Author } from './book'

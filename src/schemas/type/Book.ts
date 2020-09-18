@@ -4,7 +4,8 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql'
-import { Book, Books } from '~/mock'
+import { Books } from '~/mock'
+import { Book } from '~/model'
 import { AuthorType } from '~/schemas/type'
 
 export const BookType: GraphQLObjectType = new GraphQLObjectType({

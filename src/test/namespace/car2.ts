@@ -10,3 +10,4 @@ namespace Car {
   }
 }
 console.log(cr.Car.auto)
+var F_DF = "dfads"

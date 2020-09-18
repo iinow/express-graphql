@@ -1,14 +1,17 @@
 import {
   GraphQLObjectType,
-  GraphQLSchema,
+  GraphQLSchema
 } from 'graphql'
 import {
   FindBookQuery,
   FindBooksQuery,
   FindAuthorsQuery,
-  FindAuthorQuery,
+  FindAuthorQuery
 } from '~/schemas/query'
 import { AddAuthor, AddBook } from '~/schemas/mutation'
+import { ApolloServer } from 'apollo-server-express'
+import { buildSchemaSync } from 'type-graphql'
+import { BookResolver } from '~/schemas/resolver/BookResolver'
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -17,8 +20,8 @@ const RootQueryType = new GraphQLObjectType({
     book: FindBookQuery,
     books: FindBooksQuery,
     author: FindAuthorQuery,
-    authors: FindAuthorsQuery,
-  }),
+    authors: FindAuthorsQuery
+  })
 })
 
 const RootMutationType: GraphQLObjectType = new GraphQLObjectType({
@@ -26,13 +29,23 @@ const RootMutationType: GraphQLObjectType = new GraphQLObjectType({
   description: 'Root Mutation',
   fields: () => ({
     addBook: AddBook,
-    addAuthor: AddAuthor,
-  }),
+    addAuthor: AddAuthor
+  })
 })
 
 const schema = new GraphQLSchema({
   query: RootQueryType,
-  mutation: RootMutationType,
+  mutation: RootMutationType
 })
+
+// const apollo = new ApolloServer({
+//   schema: buildSchemaSync({
+//     resolvers: [
+//       BookResolver
+//     ]
+//   }),
+//   playground: true,
+//   context: ({ req, res }) => ({ req, res })
+// })
 
 export default schema
