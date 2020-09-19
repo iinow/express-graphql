@@ -10,5 +10,7 @@ export class Book {
 
   @Field()
   name!: string
-  // createAt: Date
+
+  @Field(() => Date)
+  createAt!: Date
 }

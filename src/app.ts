@@ -1,12 +1,10 @@
 import express from 'express'
-import * as Routers from '~/routes'
-import { graphqlHTTP } from 'express-graphql'
-import Schema from '~/schemas'
-import './test'
-import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchemaSync } from 'type-graphql'
-import { BookResolver } from '~/schemas/resolver/BookResolver'
+import { BookResolver, NotiResolver } from '~/schemas/resolver'
+import { createServer } from 'http'
+import './test'
+import 'reflect-metadata'
 
 (async () => {
   let app = express()
@@ -22,18 +20,25 @@ import { BookResolver } from '~/schemas/resolver/BookResolver'
   const apollo = new ApolloServer({
     schema: buildSchemaSync({
       resolvers: [
-        BookResolver
+        BookResolver,
+        NotiResolver
       ]
     }),
+    subscriptions: {
+      path: '/sub',
+    },
     playground: true,
     context: ({ req, res }) => ({ req, res })
   })
-
+  //
   apollo.applyMiddleware({ app })
+
+  const httpServer = createServer(app)
+  apollo.installSubscriptionHandlers(httpServer)
 
   // app.use('/users', Routers.User)
 
-  app.listen(process.env.serverPort, () => {
+  httpServer.listen(process.env.serverPort, () => {
     console.log(`server listen!!, port: ${process.env.serverPort}`)
   })
 })()

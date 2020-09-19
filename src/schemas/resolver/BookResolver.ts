@@ -1,6 +1,6 @@
 import {
   Resolver, Query, Mutation, Arg, ObjectType, Field,
-  Ctx, UseMiddleware, Int
+  Ctx, UseMiddleware, Int, Subscription
 } from 'type-graphql'
 import { Book } from '~/model'
 import { Books } from '~/mock'
@@ -57,7 +57,8 @@ export class BookResolver {
           const book: Book = {
             id: Books.books.length,
             name: newBook.name,
-            authorId: newBook.authorId
+            authorId: newBook.authorId,
+            createAt: new Date()
           }
           return book
         }),

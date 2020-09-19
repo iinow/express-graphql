@@ -19,7 +19,8 @@ export const AddBook: GraphQLFieldConfig<any, any> = {
     const book: Book = {
       id: Books.books.length + 1,
       name: args.name,
-      authorId: args.authorId
+      authorId: args.authorId,
+      createAt: new Date()
     }
     Books.books.push(book)
     return book

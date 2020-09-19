@@ -12,7 +12,7 @@ const books: Book[] = Array.apply(null, Array(5)).map((v, index) => ({
   id: index,
   authorId: index,
   name: mock.name(),
-  // createAt: mock.date(),
+  createAt: mock.date(),
 }))
 
 const authors: Author[] = Array.apply(null, Array(5)).map((v, index) => ({
